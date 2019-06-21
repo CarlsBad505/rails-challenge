@@ -1,0 +1,3 @@
+class Clothing < Collection
+  
+end

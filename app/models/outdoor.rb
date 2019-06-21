@@ -1,0 +1,3 @@
+class Outdoor < Collection
+  
+end
