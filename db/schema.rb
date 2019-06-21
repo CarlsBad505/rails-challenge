@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_27_215024) do
+ActiveRecord::Schema.define(version: 2019_06_21_025524) do
 
   create_table "collections", force: :cascade do |t|
     t.string "name"
@@ -29,6 +29,15 @@ ActiveRecord::Schema.define(version: 2019_02_27_215024) do
     t.string "email"
   end
 
+  create_table "orders", force: :cascade do |t|
+    t.integer "customer_id"
+    t.decimal "total_price", precision: 10, scale: 2
+    t.string "status", default: "pending"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_orders_on_customer_id"
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "name"
   end
@@ -40,6 +49,14 @@ ActiveRecord::Schema.define(version: 2019_02_27_215024) do
     t.float "weight"
     t.integer "product_id"
     t.index ["product_id"], name: "index_variants_on_product_id"
+  end
+
+  create_table "variants_orders", force: :cascade do |t|
+    t.integer "order_id"
+    t.integer "variant_id"
+    t.integer "quantity"
+    t.index ["order_id"], name: "index_variants_orders_on_order_id"
+    t.index ["variant_id"], name: "index_variants_orders_on_variant_id"
   end
 
 end
