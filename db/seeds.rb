@@ -28,6 +28,15 @@ end
   outdoor_products.sample.collections << clothing_collection
 end
 
+# use first variant for testing purposes
+Variant.create!(
+  name: Faker::Color.color_name,
+  cost: Faker::Number.number(rand(1..3)),
+  stock_amount: 100,
+  weight: Faker::Number.decimal(rand(1..2), 2),
+  product_id: 1
+)
+
 Product.all.each do |product|
   rand(1..4).times do
     Variant.create!(

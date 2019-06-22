@@ -106,7 +106,7 @@ Rails.describe "POST New Order", type: :request do
       customer_id: 1,
       variants: [
         {
-          id: 1000,
+          id: 10000,
           quantity: 1
         }
       ]
@@ -115,7 +115,8 @@ Rails.describe "POST New Order", type: :request do
     response_body = JSON.parse(response.body, symbolize_names: true)
     expect(response.content_type).to eq("application/json")
     expect(response_body[:error]).to eq("variant id invalid")
-    expect(response_body[:variants]).to all(include(:id, :quantity_available))
+    expect(response_body).to include(:variants)
+    expect(response_body[:variants]).to all(be_a(Integer))
     expect(response).to have_http_status(404)
   end
 
@@ -129,14 +130,15 @@ Rails.describe "POST New Order", type: :request do
       variants: [
         {
           id: 1,
-          quantity: 100
+          quantity: 10000
         }
       ]
     }
-    post "/v1/api/orderss/create", params: body.to_json, headers: headers
+    post "/v1/api/orders/create", params: body.to_json, headers: headers
     response_body = JSON.parse(response.body, symbolize_names: true)
     expect(response.content_type).to eq("application/json")
     expect(response_body[:error]).to eq("quantity unfulfillable")
+    expect(response_body).to include(:variants)
     expect(response_body[:variants]).to all(include(:id, :quantity_available))
     expect(response).to have_http_status(422)
   end
@@ -155,7 +157,7 @@ Rails.describe "POST New Order", type: :request do
         }
       ]
     }
-    post "/v1/api/orderss/create", params: body.to_json, headers: headers
+    post "/v1/api/orders/create", params: body.to_json, headers: headers
     response_body = JSON.parse(response.body, symbolize_names: true)
     expect(response.content_type).to eq("application/json")
     expect(response_body[:order_id]).to be_a(Integer)
