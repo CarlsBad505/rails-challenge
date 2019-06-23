@@ -26,6 +26,10 @@ class OrdersController < ApplicationController
   end
 
   def read_order
-
+    return invalid_param("order_id invalid") unless order = Order.find_by_id(params[:order_id])
+    data = order.read_view
+    render json: data, status: 200
+  rescue => errors
+    return action_failed
   end
 end

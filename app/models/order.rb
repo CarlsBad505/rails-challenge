@@ -19,4 +19,26 @@ class Order < ApplicationRecord
     self.customer_id = params[:customer_id]
     self.total_price = total_price
   end
+
+  def read_view
+    body = {
+      status: 200,
+      order_id: id,
+      customer_id: customer_id,
+      total_price: ('%.2f' % total_price),
+      status: status,
+      created_at: created_at,
+      updated_at: updated_at,
+      variants: []
+    }
+    variants_orders.includes(:variant).each do |vo|
+      body[:variants] << {
+        id: vo.variant.id,
+        name: vo.variant.name,
+        price: ('%.2f' % vo.variant.cost),
+        quantity: vo.quantity
+      }
+    end
+    body
+  end
 end

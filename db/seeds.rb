@@ -56,9 +56,21 @@ end
   )
 end
 
+# Use first order for testing purposes
+order = Order.new
+order_variant = Variant.first
+order.customer_id = 1
+order.total_price = order_variant.cost
+order.variants_orders.build(
+  variant_id: order_variant.id,
+  quantity: 1
+)
+order.save
+
 puts "-"*50
 puts "Seeding Finished"
 puts "#{Collection.count} collections created"
 puts "#{Product.count} products created"
 puts "#{Variant.count} variants created"
 puts "#{Customer.count} customers created"
+puts "#{Order.count} orders created"
