@@ -22,7 +22,6 @@ class Order < ApplicationRecord
 
   def read_view
     body = {
-      status: 200,
       order_id: id,
       customer_id: customer_id,
       total_price: ('%.2f' % total_price),
